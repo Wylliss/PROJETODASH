@@ -1,21 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NOSSO PAINEL</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.js') }}">
+<script>
+var leitorDeCSV = new FileReader('../saidadocw.json');
+
+window.onload = function init() {
+	leitorDeCSV.onload = leCSV;
+}
+
+function pegaCSV(inputFile) {	var file = inputFile.files[0];
+ 	leitorDeCSV.readAsText(file);
+}
+
+function leCSV(evt) {
+
+	var fileArr = evt.target.result.split('\n');
+	var strDiv = '<table>';
+
+	for (var i=0; i<fileArr.length; i++) {
+		strDiv += '<tr>';
+		var fileLine = fileArr[i].split(',');
+			for (var j=0; j<fileLine.length; j++) {
+				strDiv += '<td>'+fileLine[j].trim()+'</td>';
+			}
+		strDiv += '</tr>';
+	}
+
+	strDiv += '</table>';
+
+	var CSVsaida = document.getElementById('CSVsaida');
+		CSVsaida.innerHTML = strDiv;
+}
+</script>
 
 </head>
-<body>
-<title>Pagina principal</title>
-
-<div>
-    <script type=text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
-    <script type=text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
-</div>
-
+	<input type="file" id="inputCSV" onchange="pegaCSV(this)">
+	<div id="CSVsaida"></div>
 </body>
-preciso conseguir extrair o JSON para cá!!!
-</html>
